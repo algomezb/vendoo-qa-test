@@ -33,7 +33,7 @@ describe("Registration Form", () => {
   const emailUser = `test${number}@test.com`;
   const password = "Ldn7899cnmnm";
 
-  it("Registration Form - Test", () => {
+  it("Registration Form Complete", () => {
     cy.visit("http://localhost:3000/register");
     cy.server();
     //cy.route("POST", "*").as("callPost");
