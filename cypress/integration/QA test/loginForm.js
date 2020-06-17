@@ -18,10 +18,10 @@ describe("Longig Form", () => {
   });
 
   it("message for incorrect passwords", () => {
-    cy.route("POST", "**/getAccountInfo*").as("getAccountInfo");
-    cy.route("POST", "**/verifyPassword*").as("verifyPassword");
+    //cy.route("POST", "**/getAccountInfo*").as("getAccountInfo");
+    //cy.route("POST", "**/verifyPassword*").as("verifyPassword");
     login("test1@test.com", "Ldn7899");
-    cy.wait(["@verifyPassword", "@getAccountInfo"]);
+    //cy.wait(["@verifyPassword", "@getAccountInfo"]);
     cy.get("div")
       .contains("FORM ERROR:")
       .should(
@@ -31,9 +31,6 @@ describe("Longig Form", () => {
   });
 
   it("successful Login", () => {
-    cy.server({
-      matchingOptions: { matchBase: false },
-    });
     cy.route("POST", "**/getAccountInfo*").as("getAccountInfo");
     cy.route("POST", "**/verifyPassword*").as("verifyPassword");
     login("test1@test.com", "Ldn7899cnmnm");
