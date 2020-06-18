@@ -1,4 +1,6 @@
 import { login } from "../../support/utils";
+import { searchItem } from "../../support/utils";
+
 describe("Create Item Form", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000/");
@@ -19,8 +21,7 @@ describe("Create Item Form", () => {
     cy.get("#description").type("beautiful blue shoes with print for men");
     cy.get("#price").type("35 USD");
     //upload images
-    cy.route("POST", "**/vendoo-qa-test*").as("postImagen");
-
+    //cy.route("POST", "**/vendoo-qa-test*").as("postImagen");
     cy.get("input[type=file]")
       .as("input")
       .add_file("../fixtures/images/shoes.jpg", "image/jpg")
@@ -47,8 +48,30 @@ describe("Create Item Form", () => {
       .get("@input")
       .add_file("../fixtures/images/shoes.jpg", "image/jpg")
       .trigger("change", { force: true });
-    //cy.wait(2000);
+    cy.waitUntil(() =>
+      cy
+        .get("form div[style^='display: inline-block']")
+        .then((elements) => elements.length === 8)
+    );
     cy.get("form").submit();
+    //cy.url().should("not.include", "/items/create");
+    cy.url().should("include", "/items/");
+    cy.get("h1").should("have.text", "Edit Item");
+  });
+  it.only("Only 8 images", () => {
+    // const numberPhotos = lessSecurity.replace("= ?", "");
+    cy.server({
+      matchingOptions: { matchBase: false },
+    });
+    cy.route("POST", "**/getAccountInfo*").as("getAccountInfo");
+    searchItem("shoes");
     cy.wait("@getAccountInfo");
+    //try to upload new image
+    cy.get("input[type=file]")
+      .as("input")
+      .add_file("../fixtures/images/shoes.jpg", "image/jpg")
+      .trigger("change", { force: true });
+    cy.get("form div[style^='display: inline-block']").should("have.length", 8);
+    const value = cy.get("label").contains("Photos").its("text");
   });
 });
