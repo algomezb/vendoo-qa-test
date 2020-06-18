@@ -31,6 +31,7 @@ const ItemForm = ({ handleSubmit, formType, initValues }) => {
     const uniqueId = `static-${Date.now()}`;
     const extension = file.type.split("/").pop();
 
+    debugger;
     const res = await Firebase.storage
       .ref(`images/${user.uid}/${uniqueId}.${extension}`)
       .put(file);

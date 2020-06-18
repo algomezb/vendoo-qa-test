@@ -23,3 +23,27 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+import "cypress-wait-until";
+
+Cypress.Commands.add(
+  "add_file",
+  {
+    prevSubject: "element",
+  },
+  (input, fileName, fileType) => {
+    cy.fixture(fileName)
+      .then((content) => Cypress.Blob.base64StringToBlob(content, fileType))
+      .then((blob) => {
+        // We need the window to acces native (not nodejs) files and dt
+        return cy.window().then((window) => {
+          const testFile = new window.File([blob], fileName, {
+            type: fileType,
+          });
+          const dataTransfer = new window.DataTransfer();
+          dataTransfer.items.add(testFile);
+          input[0].files = dataTransfer.files;
+          return input;
+        });
+      });
+  }
+);
