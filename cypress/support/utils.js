@@ -6,8 +6,9 @@ export function login(username, password) {
 
 export function searchItem(itemName) {
   cy.get("h4")
-    .contains("Title: " + itemName, { matchCase: false })
-    .get("a[href^='/items']")
+    .contains(itemName, { matchCase: false })
+    .first()
+    .siblings("a[href^='/items']")
     .contains("View Item")
     .click();
 }

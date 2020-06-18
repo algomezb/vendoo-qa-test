@@ -72,6 +72,6 @@ describe("Create Item Form", () => {
       .add_file("../fixtures/images/shoes.jpg", "image/jpg")
       .trigger("change", { force: true });
     cy.get("form div[style^='display: inline-block']").should("have.length", 8);
-    const value = cy.get("label").contains("Photos").its("text");
+    //const value = cy.get("label").contains("Photos").its("text");
   });
 });
