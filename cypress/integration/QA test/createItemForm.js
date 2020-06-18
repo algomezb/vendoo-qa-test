@@ -47,7 +47,6 @@ describe("Create Item Form", () => {
       .get("@input")
       .add_file("../fixtures/images/shoes.jpg", "image/jpg")
       .trigger("change", { force: true });
-
     //cy.wait(2000);
     cy.get("form").submit();
     cy.wait("@getAccountInfo");
