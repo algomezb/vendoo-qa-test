@@ -65,3 +65,23 @@ export function newUser() {
   cy.wait("@getNewUser");
   cy.wait("@getAccountInfo");
 }
+
+export function createItem(nameItem, descripcion, price) {
+  //Create Item
+  cy.get("p>a").contains("Create new item +").click();
+  cy.get("#title").type(nameItem);
+  cy.get("#description").type(descripcion);
+  cy.get("#price").type(price);
+
+  cy.get("input[type=file]")
+    .as("input")
+    .add_file("../fixtures/images/shoes.jpg", "image/jpg")
+    .trigger("change", { force: true });
+  cy.waitUntil(() =>
+    cy
+      .get("form div[style^='display: inline-block']")
+      .then((elements) => elements.length === 1)
+  );
+  cy.get("form").submit();
+  cy.url().should("include", "/items/");
+}

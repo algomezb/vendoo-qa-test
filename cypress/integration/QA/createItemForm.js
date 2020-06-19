@@ -76,9 +76,6 @@ describe("Item Form", () => {
   const nameitem = "Red Shoes";
   const desciption = "beautiful blue shoes with print for men";
   const price = "23 USD";
-  before(() => {
-    cy.addUserAndLogIn();
-  });
   beforeEach(() => {
     //cy.visit("http://localhost:3000/");
     cy.server({
@@ -92,7 +89,7 @@ describe("Item Form", () => {
     cy.get("button").contains("Log Out").click();
   });
 
-  it("Create new item", () => {
+  it.only("Create new item", () => {
     cy.get("p>a").contains("Create new item +").click();
     cy.get("#title").type(nameitem);
     cy.get("#description").type(desciption);

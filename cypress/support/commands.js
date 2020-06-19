@@ -111,7 +111,9 @@ Cypress.Commands.add("addUserAndLogIn", () => {
   cy.route("POST", "**/getAccountInfo*").as("getAccountInfo");
   cy.route("POST", "**/signupNewUser*").as("getNewUser");
   cy.get("#email").type(emailUser);
+  cy.wait(1000);
   cy.get("#password").type(password);
+
   const value = cy
     .get("label")
     .contains("(Security)")
