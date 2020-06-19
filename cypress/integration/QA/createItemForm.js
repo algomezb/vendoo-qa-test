@@ -54,7 +54,6 @@ describe("Create Item Form", () => {
         .then((elements) => elements.length === 8)
     );
     cy.get("form").submit();
-    //cy.url().should("not.include", "/items/create");
     cy.url().should("include", "/items/");
     cy.get("h1").should("have.text", "Edit Item");
   });
