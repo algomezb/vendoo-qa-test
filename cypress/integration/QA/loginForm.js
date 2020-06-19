@@ -4,7 +4,7 @@ function login(username, password) {
   cy.get("button").contains("Login").click();
 }
 
-describe("Longig Form", () => {
+describe("LongIn Form", () => {
   beforeEach(() => {
     cy.clearLocalStorage();
     cy.clearCookies();
@@ -18,10 +18,9 @@ describe("Longig Form", () => {
   });
 
   it("message for incorrect passwords", () => {
-    //cy.route("POST", "**/getAccountInfo*").as("getAccountInfo");
-    //cy.route("POST", "**/verifyPassword*").as("verifyPassword");
-    login("test1@test.com", "Ldn7899");
-    //cy.wait(["@verifyPassword", "@getAccountInfo"]);
+    cy.route("POST", "**/verifyPassword*").as("verifyPassword");
+    login("test2@test.com", "Ldn7899");
+    cy.wait("@verifyPassword");
     cy.get("div")
       .contains("FORM ERROR:")
       .should(
@@ -33,10 +32,9 @@ describe("Longig Form", () => {
   it("successful Login", () => {
     cy.route("POST", "**/getAccountInfo*").as("getAccountInfo");
     cy.route("POST", "**/verifyPassword*").as("verifyPassword");
-    login("test1@test.com", "Ldn7899cnmnm");
-    cy.wait("@getAccountInfo");
-    cy.route("POST", "**/verifyPassword*").as("verifyPassword");
-    cy.wait(["@verifyPassword", "@getAccountInfo"]);
-    cy.url().should("include", "/inventory");
+    login("test2@test.com", "Ldn7899cnmnm");
+    cy.wait(["@getAccountInfo", "@verifyPassword"]);
+    cy.waitUntil(() => cy.url().should("contain", "inventory"));
+    cy.url().should("include", "inventory");
   });
 });
