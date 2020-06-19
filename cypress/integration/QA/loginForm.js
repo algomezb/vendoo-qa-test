@@ -13,9 +13,6 @@ describe("LongIn Form", () => {
       matchingOptions: { matchBase: false },
     });
   });
-  afterEach(() => {
-    //cy.get("button").contains("Log Out").click();
-  });
 
   it("message for incorrect passwords", () => {
     cy.route("POST", "**/verifyPassword*").as("verifyPassword");
@@ -34,7 +31,13 @@ describe("LongIn Form", () => {
     cy.route("POST", "**/verifyPassword*").as("verifyPassword");
     login("test2@test.com", "Ldn7899cnmnm");
     cy.wait(["@getAccountInfo", "@verifyPassword"]);
-    cy.waitUntil(() => cy.url().should("contain", "inventory"));
-    cy.url().should("include", "inventory");
+    cy.waitUntil(() =>
+      cy.url().then((url) => {
+        // debugger;
+        return url.indexOf("inventory") >= 0;
+      })
+    )
+      .url()
+      .should("include", "inventory");
   });
 });
